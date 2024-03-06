@@ -1,0 +1,19 @@
+.node {
+    width: 25px;
+    height: 25px;
+    background-color: white;
+    outline: 1px solid black;
+    display: inline-block;
+}
+
+.node node-start {
+    background-color: green;
+}
+
+.node node-finish {
+    background-color: yellow;
+}
+
+.node node-wall {
+    background-color: black;
+}
