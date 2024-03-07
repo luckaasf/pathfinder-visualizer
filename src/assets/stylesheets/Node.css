@@ -1,19 +1,20 @@
 .node {
-    width: 25px;
-    height: 25px;
+    width: 30px;
+    height: 30px;
     background-color: white;
     outline: 1px solid black;
     display: inline-block;
 }
 
-.node node-start {
-    background-color: green;
+.node-start {
+    background-color: rgb(0, 17, 255);
 }
 
-.node node-finish {
-    background-color: yellow;
+.node-finish {
+    background-color: rgb(255, 0, 0);
 }
 
-.node node-wall {
+.node-wall {
     background-color: black;
 }
+
