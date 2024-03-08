@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Node from "./Node";
 import '../assets/stylesheets/Grid.css';
+import dijkstra from '../assets/algorithms/Dijkstra';
 
 const GRID_ROW_SIZE = 15;
 const GRID_COL_SIZE = 35;
@@ -36,31 +37,52 @@ function Grid() {
         setGrid(newGrid);
     }, []);
 
+    function animatePathFinder(visitedNodes) {
+        for (let i = 0; i < visitedNodes.length; i++) {
+            setTimeout(() => {
+                const currentNode = visitedNodes[i];
+                if (!((currentNode.row === START_NODE_ROW && currentNode.col === START_NODE_COL) || (currentNode.row === FINISH_NODE_ROW && currentNode.col === FINISH_NODE_COL)))
+                    document.getElementById(`node-${currentNode.row}-${currentNode.col}`).className="node node-visited";
+            }, 10 * i);
+        }
+    }
+
+    function handleVisualizeButton() {
+        const startNode = grid[START_NODE_ROW][START_NODE_COL]; 
+        const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+        const currentGrid = grid;
+        const visitedNodes = dijkstra(currentGrid, startNode, finishNode);
+        animatePathFinder(visitedNodes);
+    }   
+
     return (
-        <div className="grid">
-            {grid.map((row, rowIndex) => (
-                <div className="key-container" key={rowIndex}>
-                    {row.map((node, nodeIndex) => {
-                        const { row, col, isWall, isStart, isFinish, isVisited } = node;
-                        return (
-                            <Node
-                                key={nodeIndex}
-                                row={row}
-                                col={col}
-                                isVisited={isVisited}
-                                isWall={isWall}
-                                isStart={isStart}
-                                isFinish={isFinish}
-                                mouseIsPressed={mouseIsPressed}
-                                onMouseDown={() => handleOnMouseDown(row, col)}
-                                onMouseEnter={() => handleOnMouseEnter(row, col)}
-                                onMouseUp={handleOnMouseUp}
-                            />
-                        );
-                    })}
-                </div>
-            ))}
-        </div>
+        <>
+            <button onClick={() => handleVisualizeButton()}>Visualize</button>
+            <div className="grid">
+                {grid.map((row, rowIndex) => (
+                    <div className="key-container" key={rowIndex}>
+                        {row.map((node, nodeIndex) => {
+                            const { row, col, isWall, isStart, isFinish, isVisited } = node;
+                            return (
+                                <Node
+                                    key={nodeIndex}
+                                    row={row}
+                                    col={col}
+                                    isVisited={isVisited}
+                                    isWall={isWall}
+                                    isStart={isStart}
+                                    isFinish={isFinish}
+                                    mouseIsPressed={mouseIsPressed}
+                                    onMouseDown={() => handleOnMouseDown(row, col)}
+                                    onMouseEnter={() => handleOnMouseEnter(row, col)}
+                                    onMouseUp={handleOnMouseUp}
+                                />
+                            );
+                        })}
+                    </div>
+                ))}
+            </div>
+        </>
     );
 };
 
@@ -84,6 +106,7 @@ const createNode = (row, col) => {
         isWall: false,
         isStart: row === START_NODE_ROW && col === START_NODE_COL,
         isFinish: row === FINISH_NODE_ROW && col === FINISH_NODE_COL,
+        distance: Infinity,
     };
 };
 
