@@ -14,7 +14,7 @@ const FINISH_NODE_COL = 25;
 function Grid() {
     const [grid, setGrid] = useState([]);
     const [mouseIsPressed, setMouseIsPressed] = useState(false);
-
+    
     const handleOnMouseDown = (row, col) => {
         const newGrid = toggleWallGrid(grid, row, col);
         setGrid(newGrid);
@@ -35,6 +35,12 @@ function Grid() {
     useEffect(() => {
         const newGrid = initializeGrid();
         setGrid(newGrid);
+
+        const handleDocumentMouseUp = () => {
+            setMouseIsPressed(false);
+        };
+
+        document.addEventListener("mouseup", handleDocumentMouseUp);
     }, []);
 
     function animatePathFinder(visitedNodes) {
@@ -57,7 +63,7 @@ function Grid() {
 
     return (
         <>
-            <button onClick={() => handleVisualizeButton()}>Visualize</button>
+            <button className="visualize-button" onClick={() => handleVisualizeButton()}>Visualize</button>
             <div className="grid">
                 {grid.map((row, rowIndex) => (
                     <div className="key-container" key={rowIndex}>
