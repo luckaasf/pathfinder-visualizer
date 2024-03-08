@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Node from "./Node";
 import '../assets/stylesheets/Grid.css';
-import dijkstra from '../assets/algorithms/Dijkstra';
+import { Dijkstra, getShortestPath } from '../assets/algorithms/Dijkstra';
 
 const GRID_ROW_SIZE = 15;
 const GRID_COL_SIZE = 35;
@@ -43,8 +43,13 @@ function Grid() {
         document.addEventListener("mouseup", handleDocumentMouseUp);
     }, []);
 
-    function animatePathFinder(visitedNodes) {
+    function animatePathFinder(visitedNodes, shortestPathNodes) {
         for (let i = 0; i < visitedNodes.length; i++) {
+            if (i === visitedNodes.length - 1) {
+                setTimeout(() => {
+                    animateShortestPath(shortestPathNodes);
+                }, 10 * i);
+            }
             setTimeout(() => {
                 const currentNode = visitedNodes[i];
                 if (!((currentNode.row === START_NODE_ROW && currentNode.col === START_NODE_COL) || (currentNode.row === FINISH_NODE_ROW && currentNode.col === FINISH_NODE_COL)))
@@ -53,12 +58,23 @@ function Grid() {
         }
     }
 
+    function animateShortestPath(shortestPathNodes) {
+        for (let i = 0; i < shortestPathNodes.length; i++) {
+            setTimeout(() => {
+                const currentNode = shortestPathNodes[i];
+                if (!((currentNode.row === START_NODE_ROW && currentNode.col === START_NODE_COL) || (currentNode.row === FINISH_NODE_ROW && currentNode.col === FINISH_NODE_COL)))
+                    document.getElementById(`node-${currentNode.row}-${currentNode.col}`).className="node node-shortest-path";
+            }, 10 * i);
+        }
+    }
+
     function handleVisualizeButton() {
         const startNode = grid[START_NODE_ROW][START_NODE_COL]; 
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         const currentGrid = grid;
-        const visitedNodes = dijkstra(currentGrid, startNode, finishNode);
-        animatePathFinder(visitedNodes);
+        const visitedNodes = Dijkstra(currentGrid, startNode, finishNode);
+        const shortestPathNodes = getShortestPath(finishNode);
+        animatePathFinder(visitedNodes, shortestPathNodes);
     }   
 
     return (
@@ -113,6 +129,7 @@ const createNode = (row, col) => {
         isStart: row === START_NODE_ROW && col === START_NODE_COL,
         isFinish: row === FINISH_NODE_ROW && col === FINISH_NODE_COL,
         distance: Infinity,
+        previousNode: null,
     };
 };
 

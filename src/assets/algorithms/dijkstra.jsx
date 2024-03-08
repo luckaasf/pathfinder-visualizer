@@ -18,6 +18,7 @@ function Dijkstra(grid, startNode, finishNode) {
         if (closestNode === finishNode) return visitedNodes;            
         updateUnvisitedNeighbors(grid, closestNode);
         //console.log("visited nodes ", visitedNodes);
+        console.log(finishNode.previousNode);
     }
 }
 
@@ -25,6 +26,7 @@ function updateUnvisitedNeighbors(grid, closestNode) {
     const unvisitedNeighbors = getUnvisitedNeighbors(grid, closestNode);
     for (const node of unvisitedNeighbors) {
         node.distance = closestNode.distance + 1;
+        node.previousNode = closestNode;
     }
 }
 
@@ -57,4 +59,14 @@ function sortUnvisitedNodesByDistance(unvisitedNodes) {
     unvisitedNodes.sort((nodeA, nodeB) => nodeA.distance - nodeB.distance);
 }
 
-export default Dijkstra;
+function getShortestPath(finishNode) {
+    const shortestPathNodes = [];
+    let currentNode = finishNode;
+    while (currentNode !== null) {
+        shortestPathNodes.unshift(currentNode);
+        currentNode = currentNode.previousNode;
+    }
+    return shortestPathNodes;
+}
+
+export { Dijkstra, getShortestPath };

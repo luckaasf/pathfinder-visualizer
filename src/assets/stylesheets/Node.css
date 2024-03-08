@@ -36,6 +36,36 @@
     animation-play-state: running;
 }
 
+.node-shortest-path {
+    animation-name: node-shortest-path-animation;
+    animation-duration: 2.5s;
+    animation-timing-function: ease-out;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+}
+
+@keyframes node-shortest-path-animation {
+    0% {
+        background-color: rgb(255, 253, 157);
+        border-radius: 30%;
+        transform: scale(0.3);
+    }
+
+    50% {
+        background-color: rgb(255, 255, 99);
+    }
+
+    75% {
+        background-color: rgb(255, 255, 55);
+    }
+
+    100% {
+        background-color: yellow;
+    }
+}
+
 @keyframes node-visited-animation {
     0% {
         background-color: rgb(68, 89, 206);
@@ -60,18 +90,18 @@
 
 @keyframes node-wall-animation {
     0% {
-        background-color: rgb(77, 77, 77);
+        background-color: rgb(87, 87, 87);
     }
 
     50% {
-        background-color: rgba(39, 39, 39, 0.829);
+        background-color: rgba(51, 51, 51, 0.829);
     }
 
     75% {
-        background-color: rgb(32, 32, 32);
+        background-color: rgb(48, 48, 48);
     }
 
     100% {
-        background-color: rgb(19, 19, 19);
+        background-color: rgb(20, 20, 20);
     }
 }
