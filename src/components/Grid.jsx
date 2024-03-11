@@ -1,46 +1,58 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Node from "./Node";
 import '../assets/stylesheets/Grid.css';
 import { Dijkstra, getShortestPath } from '../assets/algorithms/Dijkstra';
+import MyContext from "./MyContext";
 
-const GRID_ROW_SIZE = 15;
-const GRID_COL_SIZE = 35;
+const GRID_ROW_SIZE = 22;
+const GRID_COL_SIZE = 67;
 
 const START_NODE_ROW = 7;
 const START_NODE_COL = 7;
-const FINISH_NODE_ROW = 7;
-const FINISH_NODE_COL = 25;
+const FINISH_NODE_ROW = 15;
+const FINISH_NODE_COL = 55;
 
 function Grid() {
     const [grid, setGrid] = useState([]);
     const [mouseIsPressed, setMouseIsPressed] = useState(false);
-    
-    const handleOnMouseDown = (row, col) => {
+    const { isAlgorithmRunning } = useContext(MyContext);
+
+    function handleOnMouseDown(row, col) {
+        if ((row === START_NODE_ROW && col === START_NODE_COL) || (row === FINISH_NODE_ROW && col === FINISH_NODE_COL)) return;
         const newGrid = toggleWallGrid(grid, row, col);
         setGrid(newGrid);
         setMouseIsPressed(true);
-    };
+    }
 
-    const handleOnMouseEnter = (row, col) => {
-        if (!mouseIsPressed || (row === START_NODE_ROW && col === START_NODE_COL) || (row === FINISH_NODE_ROW && col === FINISH_NODE_COL)) return;
+    function handleOnMouseEnter(row, col) {
+        if (!mouseIsPressed || (row === START_NODE_ROW && col === START_NODE_COL) || (row === FINISH_NODE_ROW && col === FINISH_NODE_COL) || grid[row][col].isWall) return;
         const newGrid = toggleWallGrid(grid, row, col);
         setGrid(newGrid);
-    };
+    }
 
-    const handleOnMouseUp = () => {
+    function handleOnMouseUp() {
         setMouseIsPressed(false);
-        console.log("MOUSE UP");
-    };
+    }
+
+    useEffect(() => {
+        if (isAlgorithmRunning) {
+            handleVisualizeButton();
+        }
+      }, [isAlgorithmRunning]);
 
     useEffect(() => {
         const newGrid = initializeGrid();
         setGrid(newGrid);
 
-        const handleDocumentMouseUp = () => {
+        function handleDocumentMouseUp() {
             setMouseIsPressed(false);
-        };
+        }
 
         document.addEventListener("mouseup", handleDocumentMouseUp);
+
+        return () => {
+            document.removeEventListener("mouseup", handleDocumentMouseUp);
+        };
     }, []);
 
     function animatePathFinder(visitedNodes, shortestPathNodes) {
@@ -79,7 +91,7 @@ function Grid() {
 
     return (
         <>
-            <button className="visualize-button" onClick={() => handleVisualizeButton()}>Visualize</button>
+            {/*<button className="visualize-button" onClick={() => handleVisualizeButton()}>Visualize</button>*/}
             <div className="grid">
                 {grid.map((row, rowIndex) => (
                     <div className="key-container" key={rowIndex}>
@@ -106,9 +118,9 @@ function Grid() {
             </div>
         </>
     );
-};
+}
 
-const initializeGrid = () => {
+function initializeGrid() {
     const grid = [];
     for (let row = 0; row < GRID_ROW_SIZE; row++) {
         const currentRow = [];
@@ -118,9 +130,9 @@ const initializeGrid = () => {
         grid.push(currentRow);
     }
     return grid;
-};
+}
 
-const createNode = (row, col) => {
+function createNode(row, col) {
     return {
         row,
         col,
@@ -131,14 +143,14 @@ const createNode = (row, col) => {
         distance: Infinity,
         previousNode: null,
     };
-};
+}
 
-const toggleWallGrid = (grid, row, col) => {
+function toggleWallGrid(grid, row, col) {
     const newGrid = grid.slice();
     const oldNode = newGrid[row][col];
     const newNode = { ...oldNode, isWall: !oldNode.isWall };
     newGrid[row][col] = newNode;
     return newGrid;
-};
+}
 
 export default Grid;
