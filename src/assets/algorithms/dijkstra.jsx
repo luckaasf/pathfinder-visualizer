@@ -18,7 +18,7 @@ function Dijkstra(grid, startNode, finishNode) {
         if (closestNode === finishNode) return visitedNodes;            
         updateUnvisitedNeighbors(grid, closestNode);
         //console.log("visited nodes ", visitedNodes);
-        console.log(finishNode.previousNode);
+        //console.log(finishNode.previousNode);
     }
 }
 
@@ -53,7 +53,7 @@ function getAllNodes(grid) {
       }
     }
     return nodes;
-  }
+}
 
 function sortUnvisitedNodesByDistance(unvisitedNodes) {
     unvisitedNodes.sort((nodeA, nodeB) => nodeA.distance - nodeB.distance);

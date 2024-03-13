@@ -2,30 +2,32 @@ import React, { useState, useEffect, useContext } from "react";
 import Node from "./Node";
 import '../assets/stylesheets/Grid.css';
 import { Dijkstra, getShortestPath } from '../assets/algorithms/Dijkstra';
+import { AStar as Astar, getShortestPathAstar } from '../assets/algorithms/AStar';
 import MyContext from "./MyContext";
 
 const GRID_ROW_SIZE = 22;
 const GRID_COL_SIZE = 67;
 
-const START_NODE_ROW = 7;
-const START_NODE_COL = 7;
-const FINISH_NODE_ROW = 15;
-const FINISH_NODE_COL = 55;
+const START_NODE_ROW = 11;
+const START_NODE_COL = 20;
+const FINISH_NODE_ROW = 11;
+const FINISH_NODE_COL = 40;
 
 function Grid() {
     const [grid, setGrid] = useState([]);
     const [mouseIsPressed, setMouseIsPressed] = useState(false);
+
     const { isAlgorithmRunning } = useContext(MyContext);
 
     function handleOnMouseDown(row, col) {
-        if ((row === START_NODE_ROW && col === START_NODE_COL) || (row === FINISH_NODE_ROW && col === FINISH_NODE_COL)) return;
+        if ((grid[row][col].isStart) || (grid[row][col].isFinish)) return;
         const newGrid = toggleWallGrid(grid, row, col);
         setGrid(newGrid);
         setMouseIsPressed(true);
     }
 
     function handleOnMouseEnter(row, col) {
-        if (!mouseIsPressed || (row === START_NODE_ROW && col === START_NODE_COL) || (row === FINISH_NODE_ROW && col === FINISH_NODE_COL) || grid[row][col].isWall) return;
+        if (!mouseIsPressed || (grid[row][col].isStart) || (grid[row][col].isFinish) || grid[row][col].isWall) return;
         const newGrid = toggleWallGrid(grid, row, col);
         setGrid(newGrid);
     }
@@ -57,12 +59,10 @@ function Grid() {
 
     function animatePathFinder(visitedNodes, shortestPathNodes) {
         for (let i = 0; i < visitedNodes.length; i++) {
-            if (i === visitedNodes.length - 1) {
-                setTimeout(() => {
-                    animateShortestPath(shortestPathNodes);
-                }, 10 * i);
-            }
             setTimeout(() => {
+                if (i === visitedNodes.length - 1) {
+                    animateShortestPath(shortestPathNodes);
+                }
                 const currentNode = visitedNodes[i];
                 if (!((currentNode.row === START_NODE_ROW && currentNode.col === START_NODE_COL) || (currentNode.row === FINISH_NODE_ROW && currentNode.col === FINISH_NODE_COL)))
                     document.getElementById(`node-${currentNode.row}-${currentNode.col}`).className="node node-visited";
@@ -76,7 +76,7 @@ function Grid() {
                 const currentNode = shortestPathNodes[i];
                 if (!((currentNode.row === START_NODE_ROW && currentNode.col === START_NODE_COL) || (currentNode.row === FINISH_NODE_ROW && currentNode.col === FINISH_NODE_COL)))
                     document.getElementById(`node-${currentNode.row}-${currentNode.col}`).className="node node-shortest-path";
-            }, 10 * i);
+            }, 35 * i);
         }
     }
 
@@ -84,9 +84,12 @@ function Grid() {
         const startNode = grid[START_NODE_ROW][START_NODE_COL]; 
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
         const currentGrid = grid;
-        const visitedNodes = Dijkstra(currentGrid, startNode, finishNode);
-        const shortestPathNodes = getShortestPath(finishNode);
-        animatePathFinder(visitedNodes, shortestPathNodes);
+        const visitedNodes = Astar(currentGrid, startNode, finishNode);
+        //const shortestPathNodes = getShortestPath(finishNode);
+        const shortestPathNodesAstar = getShortestPathAstar(finishNode);
+        //animatePathFinder(visitedNodes, shortestPathNodes);
+
+        animatePathFinder(visitedNodes, shortestPathNodesAstar);
     }   
 
     return (
@@ -141,6 +144,7 @@ function createNode(row, col) {
         isStart: row === START_NODE_ROW && col === START_NODE_COL,
         isFinish: row === FINISH_NODE_ROW && col === FINISH_NODE_COL,
         distance: Infinity,
+        heuristic: 0,
         previousNode: null,
     };
 }
