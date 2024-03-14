@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import Node from "./Node";
 import '../assets/stylesheets/Grid.css';
-import { Dijkstra, getShortestPath } from '../assets/algorithms/Dijkstra';
-import { AStar as Astar, getShortestPathAstar } from '../assets/algorithms/AStar';
+import { Dijkstra as dijkstra, getShortestPath as dijkstraPath } from '../assets/algorithms/Dijkstra';
+import { AStar as astar, getShortestPathAstar as astarPath } from '../assets/algorithms/AStar';
 import MyContext from "./MyContext";
 
 const GRID_ROW_SIZE = 22;
@@ -17,7 +17,7 @@ function Grid() {
     const [grid, setGrid] = useState([]);
     const [mouseIsPressed, setMouseIsPressed] = useState(false);
 
-    const { isAlgorithmRunning } = useContext(MyContext);
+    const { config } = useContext(MyContext);
 
     function handleOnMouseDown(row, col) {
         if ((grid[row][col].isStart) || (grid[row][col].isFinish)) return;
@@ -37,10 +37,11 @@ function Grid() {
     }
 
     useEffect(() => {
-        if (isAlgorithmRunning) {
+        console.log("config: ", config)
+        if (config.isAlgorithmRunning) {
             handleVisualizeButton();
         }
-      }, [isAlgorithmRunning]);
+      }, [config]);
 
     useEffect(() => {
         const newGrid = initializeGrid();
@@ -58,6 +59,8 @@ function Grid() {
     }, []);
 
     function animatePathFinder(visitedNodes, shortestPathNodes) {
+        console.log("visited nodes: ", visitedNodes);
+        console.log("shortestPath: ", shortestPathNodes);
         for (let i = 0; i < visitedNodes.length; i++) {
             setTimeout(() => {
                 if (i === visitedNodes.length - 1) {
@@ -83,18 +86,28 @@ function Grid() {
     function handleVisualizeButton() {
         const startNode = grid[START_NODE_ROW][START_NODE_COL]; 
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
-        const currentGrid = grid;
-        const visitedNodes = Astar(currentGrid, startNode, finishNode);
-        //const shortestPathNodes = getShortestPath(finishNode);
-        const shortestPathNodesAstar = getShortestPathAstar(finishNode);
-        //animatePathFinder(visitedNodes, shortestPathNodes);
-
-        animatePathFinder(visitedNodes, shortestPathNodesAstar);
+        const algorithmSelected = config.algorithm;
+        const { visitedNodes, shortestPathNodes }= runAlgorithm(algorithmSelected, startNode, finishNode);
+        animatePathFinder(visitedNodes, shortestPathNodes);
     }   
+
+    function runAlgorithm(algorithmSelected, startNode, finishNode) {
+        switch (algorithmSelected) {
+            case "astar":
+                const visitedNodesAstar = astar(grid, startNode, finishNode);
+                const shortestPathNodesAstar = astarPath(finishNode);
+                return { visitedNodes: visitedNodesAstar, shortestPathNodes: shortestPathNodesAstar };
+            case "dijkstra":
+                const visitedNodesDijkstra = dijkstra(grid, startNode, finishNode);
+                const shortestPathNodes = dijkstraPath(finishNode); 
+                return { visitedNodes: visitedNodesDijkstra, shortestPathNodes: shortestPathNodes };
+            default:
+                break;
+        }
+    }
 
     return (
         <>
-            {/*<button className="visualize-button" onClick={() => handleVisualizeButton()}>Visualize</button>*/}
             <div className="grid">
                 {grid.map((row, rowIndex) => (
                     <div className="key-container" key={rowIndex}>

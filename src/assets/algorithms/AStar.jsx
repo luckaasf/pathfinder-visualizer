@@ -27,8 +27,6 @@ function AStar(grid, startNode, finishNode) {
         if (closestNode === finishNode) return visitedNodes; 
 
         updateNeighbors(closestNode, grid, finishNode);
-        
-        console.log(visitedNodes);
     }
 
 }

@@ -3,14 +3,21 @@ import MyContext from './MyContext';
 
 const MyContextProvider = ({ children }) => {
 
-  const [isAlgorithmRunning, setIsAlgorithmRunning] = useState(false);
+  const [config, setConfig] = useState({
+    isAlgorithmRunning: false,
+    algorithm: null,
+  });
 
-  function startAlgorithm() {
-    setIsAlgorithmRunning(true);
+  function startAlgorithm(isRunning, algorithmName) {
+    setConfig(prevConfig => ({
+      ...prevConfig,
+      isAlgorithmRunning: isRunning,
+      algorithm: algorithmName,
+    }));
   };
 
   return (
-    <MyContext.Provider value={{ isAlgorithmRunning, startAlgorithm }}>
+    <MyContext.Provider value={{ config, startAlgorithm }}>
       {children}
     </MyContext.Provider>
   );
