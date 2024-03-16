@@ -2,7 +2,7 @@
 
 Path Visualizer is a web application built with React that provides an interactive environment for visualizing pathfinding algorithms such as Dijkstra and A* (A-star). Users can manipulate the grid, create walls, move start and end nodes, and adjust visualization speed to gain insights into how these algorithms work.
 
-![Path Visualizer Demo](/pathfinder-visualizer/src/assets/gifs/showcase.gif)
+![Visualizer](pathfinder-visualizer\src\assets\gifs\showcase.gif)
 
 ## Table of Contents
 
