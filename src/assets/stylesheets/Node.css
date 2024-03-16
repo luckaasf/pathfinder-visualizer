@@ -1,7 +1,7 @@
 .node {
     width: 28px;
     height: 28px;
-    background-color: white;
+    background-color: rgb(254, 254, 253);
     outline: 1px solid #94e3f7;
     display: inline-block;
     user-select: none;
