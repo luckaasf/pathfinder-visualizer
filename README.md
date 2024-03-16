@@ -49,4 +49,4 @@ Path Visualizer is a web application built with React that provides an interacti
 
    - Click on individual nodes to toggle walls, or click and drag to create multiple walls.
    - Click and drag the start and end nodes to reposition them.
-   - Adjust the speed slider to control the visualization speed.
+   - Control the visualization speed.
