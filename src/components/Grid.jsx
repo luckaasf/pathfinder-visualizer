@@ -8,9 +8,12 @@ import MyContext from "./MyContext";
 const GRID_ROW_SIZE = 22;
 const GRID_COL_SIZE = 67;
 
+const START_NODE_POSITION = { row: 1, col: 1 };
+const FINISH_NODE_POSITION = { row: 20, col: 65};
 
-const START_NODE_POSITION = { row: 11, col: 20 };
-const FINISH_NODE_POSITION = { row: 11, col: 40};
+const SLOW = 100;
+const MEDIUM = 20;
+const FAST = 5;
 
 function Grid() {
     const [grid, setGrid] = useState([]);
@@ -92,8 +95,6 @@ function Grid() {
         };
     }
     
-
-    
     function toggleWallGrid(grid, row, col) {
         const newGrid = grid.slice();
         const oldNode = newGrid[row][col];
@@ -103,13 +104,18 @@ function Grid() {
     }
 
     useEffect(() => {
-        console.log("config: ", config)
         if (config.isAlgorithmRunning) {
-            handleVisualizeButton();
+            if (config.algorithm !== "") {
+                console.log(config);
+                handleVisualizeButton();
+            } else {
+                console.log("ERROR");
+            }
         }
-      }, [config]);
+    }, [config.isAlgorithmRunning]);
 
     useEffect(() => {
+        console.log(config);
         const newGrid = initializeGrid();
         setGrid(newGrid);
 
@@ -122,11 +128,10 @@ function Grid() {
         return () => {
             document.removeEventListener("mouseup", handleDocumentMouseUp);
         };
+
     }, []);
     
     function animatePathFinder(visitedNodes, shortestPathNodes) {
-        console.log("visited nodes: ", visitedNodes);
-        console.log("shortestPath: ", shortestPathNodes);
         for (let i = 0; i < visitedNodes.length; i++) {
             setTimeout(() => {
                 if (i === visitedNodes.length - 1) {
@@ -135,7 +140,7 @@ function Grid() {
                 const currentNode = visitedNodes[i];
                 if (!((currentNode.row === startNodePosition.row && currentNode.col === startNodePosition.col) || (currentNode.row === finishNodePosition.row && currentNode.col === finishNodePosition.col)))
                     document.getElementById(`node-${currentNode.row}-${currentNode.col}`).className="node node-visited";
-            }, 10 * i);
+            }, (parseInt(config.speed)) * i);
         }
     }
     

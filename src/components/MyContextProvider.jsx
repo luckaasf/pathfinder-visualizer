@@ -5,14 +5,16 @@ const MyContextProvider = ({ children }) => {
 
   const [config, setConfig] = useState({
     isAlgorithmRunning: false,
-    algorithm: null,
+    algorithm: "",
+    speed: "20",
   });
 
-  function startAlgorithm(isRunning, algorithmName) {
+  function startAlgorithm(isRunning, algorithmName, speed) {
     setConfig(prevConfig => ({
       ...prevConfig,
       isAlgorithmRunning: isRunning,
       algorithm: algorithmName,
+      speed: speed,
     }));
   };
 
