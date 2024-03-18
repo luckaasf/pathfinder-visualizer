@@ -56,7 +56,7 @@ function Header() {
             <select className="maze" value={selectedMaze} onChange={handleMazeChange}>
                 <option value="">Maze</option>
                 <option value="random">Random maze</option>
-                <option value="binarytree">Recursive Division</option>
+                <option value="binarytree">Binary Tree</option>
             </select>
             <select className="dropdown" value={selectedAlgorithm} onChange={handleAlgorithmChange}>
                 <option value="">Choose an algorithm</option>
