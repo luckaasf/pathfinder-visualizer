@@ -15,6 +15,7 @@ Path Visualizer is a web application built with React that provides an interacti
 - **Pathfinding Algorithms:** Utilizes Dijkstra and A* algorithms to find the shortest path between nodes on a grid.
 - **Speed Control:** Allows users to control the speed of the visualization, providing options for slow, medium, and fast rendering.
 - **Interactive Grid:** Users can interact with the grid by toggling walls, and relocating the start and end points to observe the algorithm's behavior.
+- **Maze Generation:** Added features to generate mazes. Users can currently generate random mazes and binary tree mazes.
 
 ## Installation
 

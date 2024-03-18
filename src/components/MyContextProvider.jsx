@@ -7,14 +7,16 @@ const MyContextProvider = ({ children }) => {
     isAlgorithmRunning: false,
     algorithm: "",
     speed: "20",
+    maze: "",
   });
 
-  function startAlgorithm(isRunning, algorithmName, speed) {
+  function startAlgorithm(isRunning, algorithmName, speed, maze) {
     setConfig(prevConfig => ({
       ...prevConfig,
       isAlgorithmRunning: isRunning,
       algorithm: algorithmName,
       speed: speed,
+      maze: maze,
     }));
   };
 

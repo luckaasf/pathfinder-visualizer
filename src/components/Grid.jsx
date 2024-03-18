@@ -4,16 +4,14 @@ import '../assets/stylesheets/Grid.css';
 import { Dijkstra as dijkstra, getShortestPath as dijkstraPath } from '../assets/algorithms/Dijkstra';
 import { AStar as astar, getShortestPathAstar as astarPath } from '../assets/algorithms/AStar';
 import MyContext from "./MyContext";
+import RandomMaze from "../assets/mazes/RandomMaze";
+import BinaryTree from "../assets/mazes/BinaryTree";
 
-const GRID_ROW_SIZE = 22;
+const GRID_ROW_SIZE = 23;
 const GRID_COL_SIZE = 67;
 
 const START_NODE_POSITION = { row: 1, col: 1 };
-const FINISH_NODE_POSITION = { row: 20, col: 65};
-
-const SLOW = 100;
-const MEDIUM = 20;
-const FAST = 5;
+const FINISH_NODE_POSITION = { row: 21, col: 65};
 
 function Grid() {
     const [grid, setGrid] = useState([]);
@@ -104,6 +102,21 @@ function Grid() {
     }
 
     useEffect(() => {
+        switch (config.maze) {
+            case 'random':
+                const randomWalls = RandomMaze(grid);
+                animateMaze(randomWalls);
+                break;
+            case 'binarytree':
+                const binaryTreeWalls = BinaryTree(grid);
+                animateMaze(binaryTreeWalls);
+                break;
+            default:
+                break;
+        }
+    }, [config.maze]);
+
+    useEffect(() => {
         if (config.isAlgorithmRunning) {
             if (config.algorithm !== "") {
                 console.log(config);
@@ -124,13 +137,21 @@ function Grid() {
         }
 
         document.addEventListener("mouseup", handleDocumentMouseUp);
-
         return () => {
             document.removeEventListener("mouseup", handleDocumentMouseUp);
         };
 
     }, []);
     
+    function animateMaze(walls) {
+        for (let i = 0; i < walls.length; i++) {
+            setTimeout(() => {
+                const currentNode = walls[i];
+                document.getElementById(`node-${currentNode.row}-${currentNode.col}`).className="node node-wall";
+            }, (parseInt(config.speed)) * i);
+        }
+    }
+
     function animatePathFinder(visitedNodes, shortestPathNodes) {
         for (let i = 0; i < visitedNodes.length; i++) {
             setTimeout(() => {
