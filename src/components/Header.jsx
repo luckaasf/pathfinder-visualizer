@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
+import { useNavigate } from 'react-router-dom';
 import '../assets/stylesheets/Header.css';
 import MyContext from "./MyContext";
 
@@ -9,6 +10,7 @@ function Header() {
     const [selectedSpeed, setSelectedSpeed] = useState("20");
     const [selectedMaze, setSelectedMaze] = useState("");
     const [isRunning, setIsRunning] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (selectedAlgorithm !== "") {
@@ -50,8 +52,13 @@ function Header() {
         setSelectedMaze(event.target.value);
     }
 
+    function handlePopUpChange() {
+        navigate("/login");
+    }
+
     return(
         <header className="header-container">
+            <a href="/" className="title-project">Pathfinder Visualizer</a>
             <div className="visualize-container">
             <select className="maze" value={selectedMaze} onChange={handleMazeChange}>
                 <option value="">Maze</option>
@@ -70,6 +77,9 @@ function Header() {
                 <option value="3">Fast</option>
             </select>
             </div>
+            <button className="login-button" onClick={handlePopUpChange} alt="Log In" title="Log In">
+                <span className="login-icon">&#x2386;</span>
+            </button>
         </header>
     );
 }
