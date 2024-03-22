@@ -59,7 +59,7 @@ local_settings.py
 venv/
 env/
 virtualenv/
-pathfinder_virtual_environment
+backend/pathfinder_virtual_environment/
 
 # Dependency directories
 pip-wheel-metadata/

@@ -10,7 +10,7 @@
 .visualize-container {
     display: flex;
     align-items: center;
-    margin-right: 300px;
+    margin-right: 500px;
 }
 
 .visualize-button {
@@ -32,7 +32,7 @@
 .visualize-button span {
     color: white;
     font-family: Arial, Helvetica, sans-serif;
-    font-size: 18px;
+    font-size: 14px;
     text-align: center;
 }
 
@@ -189,4 +189,12 @@
     font-size: 50px;
     color: white;
     transition: color 0.3s ease;
+}
+
+.user-info {
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    margin-right: 10px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }

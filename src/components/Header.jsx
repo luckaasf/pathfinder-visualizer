@@ -100,6 +100,10 @@ function Header() {
                     <span className="login-icon">&#x2386;</span>
                 </button>
             }
+
+            {isLoggedIn &&
+                <div className="user-info">Logged in as {localStorage.getItem("username")}</div>
+            }
             {isLoggedIn &&
                 <button className="logout-button" onClick={handleLogoutChange} alt="Log Out" title="Log Out">
                     <span className="logout-icon">&#x21AA;</span>
