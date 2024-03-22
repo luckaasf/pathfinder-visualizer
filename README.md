@@ -67,15 +67,15 @@ Path Visualizer is a web application built with React that provides an interacti
     python manage.py runserver
     ```
 
-5. **PostgreSQL Instalation**
+5. **PostgreSQL Instalation (Optional --> Users can still use the grid, algorithms, mazes and speed even without logging in):**
 
-1. Install postgreSQL at https://www.postgresql.org/download/ and set up the following data base fields at settings.py:
+    1. Install postgreSQL at https://www.postgresql.org/download/ and set up the following data base fields at settings.py:
 
-    - Database name
-    - User
-    - Password
-    - Host
-    - Port
+        - Database name
+        - User
+        - Password
+        - Host
+        - Port
 
 ## Usage
 
