@@ -21,4 +21,6 @@ from pathfinder import views_user
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/register/', views_user.register_user),
+    path('api/login/', views_user.login_user),
+    path('api/logout/', views_user.logout_user),
 ]
