@@ -41,7 +41,7 @@ def login_user(request):
 @api_view(['POST'])
 def logout_user(request):
     if request.method == 'POST':
-        auth_header = request.data.get('Authorization')
+        auth_header = request.headers.get('Authorization')
         if auth_header:
             auth_token = auth_header.split(' ')[1]
             token = Token.objects.filter(key=auth_token).first()

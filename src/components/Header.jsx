@@ -12,6 +12,8 @@ function Header() {
     const [isRunning, setIsRunning] = useState(false);
     const navigate = useNavigate();
 
+    const isLoggedIn = localStorage.getItem("username") !== null;
+
     useEffect(() => {
         if (selectedAlgorithm !== "") {
             startAlgorithm(false, selectedAlgorithm, selectedSpeed, selectedMaze);
@@ -56,6 +58,22 @@ function Header() {
         navigate("/login");
     }
 
+    function handleLogoutChange() {
+        fetch('http://127.0.0.1:8000/api/login/', {
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json',
+                'Authorization': `Token ${localStorage.getItem("token")}`
+            },
+        })
+        .then(response => {
+            console.log("Successful Log out");
+            localStorage.clear();
+            navigate("/");
+        })
+        .catch(error => console.log("Error ", error))
+    }
+
     return(
         <header className="header-container">
             <a href="/" className="title-project">Pathfinder Visualizer</a>
@@ -77,9 +95,16 @@ function Header() {
                 <option value="3">Fast</option>
             </select>
             </div>
-            <button className="login-button" onClick={handlePopUpChange} alt="Log In" title="Log In">
-                <span className="login-icon">&#x2386;</span>
-            </button>
+            {!isLoggedIn && 
+                <button className="login-button" onClick={handlePopUpChange} alt="Log In" title="Log In">
+                    <span className="login-icon">&#x2386;</span>
+                </button>
+            }
+            {isLoggedIn &&
+                <button className="logout-button" onClick={handleLogoutChange} alt="Log Out" title="Log Out">
+                    <span className="logout-icon">&#x21AA;</span>
+                </button>
+            }
         </header>
     );
 }
