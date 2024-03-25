@@ -65,6 +65,13 @@
     animation-play-state: running;
 }
 
+.node-visited-static {
+    background-color: rgb(0, 174, 255);
+}
+
+.node-shortest-path-static {
+    background-color: rgb(255, 255, 129);}
+
 .node-shortest-path {
     animation-name: node-shortest-path-animation;
     animation-duration: 1s;
@@ -166,7 +173,7 @@
 @keyframes node-wall-animation {
     0% {
         background-color: rgb(20, 47, 78);
-        transform: scale(0.3);
+        transform: scale(0.5);
     }
 
     50% {

@@ -1,7 +1,6 @@
 function RandomMaze(grid) {
     const newGrid = grid.map(row => row.slice());
     const randomWalls = [];
-
     for (const row of newGrid) {
         for (const node of row) {
             if (node.isStart || node.isFinish)
@@ -13,7 +12,6 @@ function RandomMaze(grid) {
             }   
         }
     }
-
     return randomWalls;
 }
 

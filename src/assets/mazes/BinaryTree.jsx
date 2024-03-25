@@ -4,21 +4,17 @@ function BinaryTree(grid) {
 
     for (const row of newGrid) {
         for (const node of row) {
-            
             if (node.isStart || node.isFinish) continue;
-
             if (node.row % 2 === 0 || node.col % 2 === 0) {
                 node.isWall = true;
                 binaryTreeWalls.push(node);
             }
-
         }
     }
+    
     for (let row = 1; row < newGrid.length; row += 2) {
         for (let col = 1; col < newGrid[0].length; col += 2) {
-
             const randomDirection = Math.random();
-
             if (row === newGrid.length - 2 && col === newGrid[0].length - 2) {
                 continue;
             } else if (row === newGrid.length - 2) {

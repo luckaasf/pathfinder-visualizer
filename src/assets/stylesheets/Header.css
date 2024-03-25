@@ -13,7 +13,7 @@
     margin-right: 500px;
 }
 
-.visualize-button {
+.visualize-button, .clear-button {
     background-color: #007bff;
     border-radius: 10px;
     border: none;
@@ -29,14 +29,14 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
-.visualize-button span {
+.visualize-button span, .clear-button span {
     color: white;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 14px;
     text-align: center;
 }
 
-.visualize-button:hover {
+.visualize-button:hover, .clear-button:hover {
     background-color: #0056b3;
 }
 

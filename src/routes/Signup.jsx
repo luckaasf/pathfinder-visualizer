@@ -40,7 +40,7 @@ function Signup() {
                 navigate('/login');
             } else {
                 console.log("Error on registration", response.statusText);
-                alert("There was a error in one of the fields, try again.");
+                alert("There was an error in one of the fields, try again.");
             }
         })
         .catch(error => console.log("Error: ", error))

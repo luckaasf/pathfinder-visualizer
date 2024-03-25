@@ -14,18 +14,15 @@ function AStar(grid, startNode, finishNode) {
 
     while (!!unvisitedNodes.length) {
         sortUnvisitedNodesByDistance(unvisitedNodes, finishNode);
-
         const closestNode = unvisitedNodes.shift();
-
+        // skip walls
         if (closestNode.isWall) continue;
-
+        // if it gets to this point it means there is no path
         if (closestNode.distance === Infinity) return visitedNodes;
-        
         closestNode.isVisited = true;
         visitedNodes.push(closestNode);
-
+        // path was found
         if (closestNode === finishNode) return visitedNodes; 
-
         updateNeighbors(closestNode, grid, finishNode);
     }
 
@@ -35,7 +32,6 @@ function sortUnvisitedNodesByDistance(unvisitedNodes, finishNode) {
     unvisitedNodes.sort((nodeA, nodeB) => {
         const costA = nodeA.distance + nodeA.heuristic;
         const costB = nodeB.distance + nodeB.heuristic;
-        
         if (costA === costB) {
             return(
                 calculateEuclideanDistance(nodeA, finishNode) - calculateEuclideanDistance(nodeB, finishNode)
@@ -43,7 +39,6 @@ function sortUnvisitedNodesByDistance(unvisitedNodes, finishNode) {
         } else {
             return costA - costB;
         }
-
     });
 }
 
@@ -59,13 +54,10 @@ function getAllNodes(grid) {
 
 function updateNeighbors(currentNode, grid, finishNode) {
     const neighbors = getNeighbors(currentNode, grid);
-
     for (const neighbor of neighbors) {
-        
         const newDistance = currentNode.distance + 1;
         const newHeuristic = calculateManhattanHeuristic(neighbor, finishNode);
         const newCost = newDistance + newHeuristic;
-        
         if (newCost < neighbor.distance + neighbor.heuristic) {
             neighbor.distance = newDistance;
             neighbor.heuristic = newHeuristic;
@@ -83,7 +75,7 @@ function getNeighbors(currentNode, grid) {
     if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
     if (col > 0) neighbors.push(grid[row][col - 1]);
     if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
-
+    
     return neighbors.filter(node => !node.isVisited);
 
 }

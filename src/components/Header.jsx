@@ -9,14 +9,15 @@ function Header() {
     const [selectedAlgorithm, setSelectedAlgorithm] = useState("");
     const [selectedSpeed, setSelectedSpeed] = useState("20");
     const [selectedMaze, setSelectedMaze] = useState("");
-    const [isRunning, setIsRunning] = useState(false);
+    const [runAlgorithm, setRunAlgorithm] = useState(false);
+    const [clearGrid, setClearGrid] = useState(false);
     const navigate = useNavigate();
 
     const isLoggedIn = localStorage.getItem("username") !== null;
 
     useEffect(() => {
         if (selectedAlgorithm !== "") {
-            startAlgorithm(false, selectedAlgorithm, selectedSpeed, selectedMaze);
+            startAlgorithm(false, selectedAlgorithm, selectedSpeed, selectedMaze, false);
         }
     }, [selectedAlgorithm]);
 
@@ -26,9 +27,9 @@ function Header() {
 
     useEffect(() => {
         if (selectedSpeed !== "medium")
-            startAlgorithm(false, selectedAlgorithm, selectedSpeed, selectedMaze);
+            startAlgorithm(false, selectedAlgorithm, selectedSpeed, selectedMaze, false);
         else 
-            startAlgorithm(false, selectedAlgorithm, "medium");
+            startAlgorithm(false, selectedAlgorithm, "medium", selectedMaze, false);
     }, [selectedSpeed]);
 
 
@@ -37,26 +38,36 @@ function Header() {
     }
 
     useEffect(() => {
-        if (isRunning !== false) 
-            startAlgorithm(isRunning, selectedAlgorithm, selectedSpeed, selectedMaze);
-    }, [isRunning]);
+        if (runAlgorithm !== false) 
+            startAlgorithm(runAlgorithm, selectedAlgorithm, selectedSpeed, selectedMaze, false);
+    }, [runAlgorithm]);
 
     function handleClick() {
-        setIsRunning(true);
+        setRunAlgorithm(true);
     }
 
     useEffect(() => {
         if (selectedMaze !== "")
-            startAlgorithm(isRunning, selectedAlgorithm, selectedSpeed, selectedMaze);
+            startAlgorithm(runAlgorithm, selectedAlgorithm, selectedSpeed, selectedMaze, false);
     }, [selectedMaze]);
 
     function handleMazeChange(event) {
         setSelectedMaze(event.target.value);
     }
 
+    useEffect(() => {
+        if (clearGrid !== false)
+            startAlgorithm(runAlgorithm, selectedAlgorithm, selectedSpeed, selectedMaze, clearGrid);
+    }, [clearGrid])
+
+    function handleClearChange() {
+        setClearGrid(true);
+    }
+
     function handlePopUpChange() {
         navigate("/login");
     }
+
 
     function handleLogoutChange() {
         fetch('http://127.0.0.1:8000/api/login/', {
@@ -73,6 +84,7 @@ function Header() {
         })
         .catch(error => console.log("Error ", error))
     }
+
 
     return(
         <header className="header-container">
@@ -92,8 +104,9 @@ function Header() {
             <select className="speed" value={selectedSpeed} onChange={handleSpeedChange}>
                 <option value="100">Slow</option>
                 <option value="20">Medium</option>
-                <option value="3">Fast</option>
+                <option value="8">Fast</option>
             </select>
+            <button className="clear-button" onClick={(handleClearChange)}><span>Reset</span></button>
             </div>
             {!isLoggedIn && 
                 <button className="login-button" onClick={handlePopUpChange} alt="Log In" title="Log In">

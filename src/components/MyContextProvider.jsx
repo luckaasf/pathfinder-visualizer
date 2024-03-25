@@ -4,19 +4,21 @@ import MyContext from './MyContext';
 const MyContextProvider = ({ children }) => {
 
   const [config, setConfig] = useState({
-    isAlgorithmRunning: false,
+    runAlgorithm: false,
     algorithm: "",
     speed: "20",
     maze: "",
+    clear: false,
   });
 
-  function startAlgorithm(isRunning, algorithmName, speed, maze) {
+  function startAlgorithm(runAlgorithm, algorithmName, speed, maze, clear) {
     setConfig(prevConfig => ({
       ...prevConfig,
-      isAlgorithmRunning: isRunning,
+      runAlgorithm: runAlgorithm,
       algorithm: algorithmName,
       speed: speed,
       maze: maze,
+      clear: clear,
     }));
   };
 

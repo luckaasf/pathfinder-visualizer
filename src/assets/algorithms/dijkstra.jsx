@@ -4,21 +4,16 @@ function Dijkstra(grid, startNode, finishNode) {
     const unvisitedNodes = getAllNodes(grid);
     while(!!unvisitedNodes.length) {
         sortUnvisitedNodesByDistance(unvisitedNodes);
-        //console.log("unvisitedNodes ", unvisitedNodes);
         const closestNode = unvisitedNodes.shift();
-        //console.log("closestNode ", closestNode);
-
+        // skip walls
         if (closestNode.isWall) continue;
-            
+        // if it gets to this point it means there is no path
         if (closestNode.distance === Infinity) return visitedNodes;
-
         closestNode.isVisited = true;
         visitedNodes.push(closestNode);    
-
+        // path was found
         if (closestNode === finishNode) return visitedNodes;            
         updateUnvisitedNeighbors(grid, closestNode);
-        //console.log("visited nodes ", visitedNodes);
-        //console.log(finishNode.previousNode);
     }
 }
 
@@ -34,14 +29,11 @@ function getUnvisitedNeighbors(grid, closestNode) {
     const neighbors = [];
     const row = closestNode.row;
     const col = closestNode.col;
-
     // the only neighbors are the left, right, top and bottom nodes
     if (row > 0) neighbors.push(grid[row - 1][col]);
     if (row < grid.length - 1) neighbors.push(grid[row + 1][col]);
     if (col > 0) neighbors.push(grid[row][col - 1]);
     if (col < grid[0].length - 1) neighbors.push(grid[row][col + 1]);
-
-    //console.log("neighbors ", neighbors.filter(node => !node.isVisited));
     return neighbors.filter(node => !node.isVisited);
 }
 
