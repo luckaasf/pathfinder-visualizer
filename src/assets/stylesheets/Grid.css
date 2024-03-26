@@ -1,6 +1,6 @@
 .grid {
     position: fixed;
-    top: 55%;
+    top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
     border: red;
@@ -10,3 +10,57 @@
     display: flex;
     margin: 0;
 }
+
+.download-container {
+    position: absolute;
+    top: -50px; 
+    left: -10px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.download-button {
+    animation-name: download-button-animation;
+    animation-duration: 0.2s;
+    animation-delay: 0;
+    animation-timing-function: ease-out;
+    animation-direction: alternate;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+    background-color: #007bff;
+    border-radius: 10px;
+    border: none;
+    width: 80px;
+    height: 40px;
+    margin-left: 10px; 
+    margin-right: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.download-button span {
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 14px;
+    text-align: center;
+}
+
+.download-button:hover {
+    background-color: #0056b3;
+}
+
+@keyframes download-button-animation {
+    0% {
+        transform: scale(0.3);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}  

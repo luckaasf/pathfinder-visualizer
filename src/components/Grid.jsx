@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useContext} from "react";
+import React, { useState, useEffect, useContext, useRef } from "react";
+import { useScreenshot, createFileName } from 'use-react-screenshot';
 import Node from "./Node";
 import '../assets/stylesheets/Grid.css';
 import MyContext from "./MyContext";
@@ -14,8 +15,22 @@ function Grid() {
     const [startNodePosition, setStartNodePosition] = useState(START_NODE_POSITION);
     const [finishNodePosition, setFinishNodePosition] = useState(FINISH_NODE_POSITION);
     const [animationInProgress, setAnimationInProgress] = useState(false);
+    const [isDone, setIsDone] = useState(false);
+
+    const isLoggedIn = localStorage.getItem("username") !== null;
 
     const { config } = useContext(MyContext);
+
+    const ref = useRef(null);
+    const [image, takeScreenshot] = useScreenshot();
+    const getImage = () => takeScreenshot(ref.current);
+
+    const download = (iImage, { name = 'img', extension = 'png' } = {}) => {
+        const a = document.createElement('a')
+        a.href = iImage
+        a.download = createFileName(extension, name)
+        a.click()
+      }
 
     function handleOnMouseDown(row, col) {
         if (animationInProgress) return;
@@ -59,6 +74,13 @@ function Grid() {
     }, [config.clear])
 
     useEffect(() => {
+        if (image) {
+          download(image, { name: 'grid', extension: 'png' })
+          console.log(image.name);
+        }
+      }, [image])
+
+    useEffect(() => {
         switch (config.maze) {
             case 'random':
                 const randomWalls = RandomMaze(grid);
@@ -81,6 +103,7 @@ function Grid() {
                 (async () => {
                     await runVisualizer(grid, startNodePosition, finishNodePosition, config.algorithm, config.speed);
                     setAnimationInProgress(false);
+                    setIsDone(true);
                 })();        
             } else {
                 console.log("ERROR");
@@ -103,7 +126,19 @@ function Grid() {
                 
     return (
         <>
-            <div className="grid">
+            
+            <div className="grid" ref={ref}>
+            {isDone && 
+                <div className="download-container">
+                    <button className="download-button" onClick={getImage}><span>Download</span></button>
+                </div>
+            }
+            {isLoggedIn && isDone &&
+                <div className="download-container">
+                    <button className="download-button" onClick={getImage}><span>Download</span></button>
+                    <button className="download-button"><span>Save</span></button>
+                </div>
+            }
                 {grid.map((row, rowIndex) => (
                     <div className="key-container" key={rowIndex}>
                         {row.map((node, nodeIndex) => {
@@ -132,3 +167,4 @@ function Grid() {
 }
 
 export default Grid;
+

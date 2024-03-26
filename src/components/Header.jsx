@@ -80,7 +80,7 @@ function Header() {
         .then(response => {
             console.log("Successful Log out");
             localStorage.clear();
-            navigate("/");
+            window.location.reload();
         })
         .catch(error => console.log("Error ", error))
     }
