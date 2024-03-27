@@ -1,7 +1,8 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from .models import CustomUser
 from django.contrib.auth.models import User
-
+from .models import Grid
 class UserSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(write_only=True)
 
@@ -26,4 +27,19 @@ class UserSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**validated_data)
         CustomUser.objects.create(user=user, username=validated_data['username'], email=validated_data['email'])
         return user
-        
+    
+class GridSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Grid
+        fields = ('id', 'grid_name', 'user', 'image', 'algorithm', 'maze', 'speed')
+
+    def create(self, validated_data):
+        custom_user_id = validated_data.pop('user')
+
+        custom_user = get_object_or_404(CustomUser, id=custom_user_id)
+
+        validated_data['user'] = custom_user
+
+        return Grid.objects.create(**validated_data)
+    

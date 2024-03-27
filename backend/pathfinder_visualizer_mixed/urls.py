@@ -16,11 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from pathfinder import views_user
+from django.conf import settings
+from django.conf.urls.static import static
+from pathfinder import views_user, views_grid
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/register/', views_user.register_user),
     path('api/login/', views_user.login_user),
     path('api/logout/', views_user.logout_user),
-]
+    path('api/save/', views_grid.create_grid), 
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

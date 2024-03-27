@@ -11,7 +11,10 @@ class CustomUser(models.Model):
 class Grid(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='grids')
     grid_name = models.CharField(max_length=100)
-    grid_image = models.ImageField(default=False)
+    image = models.ImageField(upload_to='grids/', null=True, blank=True)
+    algorithm = models.CharField(max_length=20, default=False)
+    speed = models.CharField(max_length=10, default=False)
+    maze = models.CharField(max_length=20, default=False)
 
     def __str__(self):
         return f"{self.user.username}'s {self.user.grid_name} Grid"
