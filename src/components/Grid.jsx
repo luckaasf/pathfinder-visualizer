@@ -16,11 +16,14 @@ function Grid() {
     const [finishNodePosition, setFinishNodePosition] = useState(FINISH_NODE_POSITION);
     const [animationInProgress, setAnimationInProgress] = useState(false);
     const [isDone, setIsDone] = useState(false);
+    const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [imageName, setImageName] = useState("");
 
     const isLoggedIn = localStorage.getItem("username") !== null;
 
     const { config } = useContext(MyContext);
 
+    const popupRef = useRef(null);
     const ref = useRef(null);
     const [image, takeScreenshot] = useScreenshot();
     const getImage = () => takeScreenshot(ref.current);
@@ -30,7 +33,7 @@ function Grid() {
         a.href = iImage
         a.download = createFileName(extension, name)
         a.click()
-      }
+    }
 
     function handleOnMouseDown(row, col) {
         if (animationInProgress) return;
@@ -72,14 +75,7 @@ function Grid() {
             window.location.reload();
         }
     }, [config.clear])
-
-    useEffect(() => {
-        if (image) {
-          download(image, { name: 'grid', extension: 'png' })
-          console.log(image.name);
-        }
-      }, [image])
-
+    
     useEffect(() => {
         switch (config.maze) {
             case 'random':
@@ -112,7 +108,19 @@ function Grid() {
     }, [config.runAlgorithm]);
 
     useEffect(() => {
-        console.log(config);
+        function handleOutsideClick(event) {
+            if (isPopupOpen && !popupRef.current.contains(event.target)) {
+                setIsPopupOpen(false);
+            }
+        }
+        document.addEventListener("mousedown", handleOutsideClick)
+
+        return () => {
+            document.removeEventListener("mousedown", handleOutsideClick)
+        };
+    }, [isPopupOpen])
+    
+    useEffect(() => {
         const newGrid = initializeGrid(GRID_ROW_SIZE, GRID_COL_SIZE);
         setGrid(newGrid);
         function handleDocumentMouseUp() {
@@ -123,20 +131,82 @@ function Grid() {
             document.removeEventListener("mouseup", handleDocumentMouseUp);
         };
     }, []);
-                
+            
+    function downloadScreenshot() {
+        takeScreenshot(ref.current).then(download);
+    }
+
+    function handlePopUpChange() {
+        setIsPopupOpen(true);
+        console.log("OPEN");
+    }
+
+    async function handleSaveSubmit(event) {
+        event.preventDefault();
+        const token = localStorage.getItem("token");
+        const id = localStorage.getItem("id");
+        const algorithm = config.algorithm;
+        const maze = config.maze;
+        const speed = config.speed;
+    
+        try {
+            const image = await takeScreenshot(ref.current);
+            const blob = await fetch(image).then(res => res.blob());
+    
+            const formData = new FormData();
+            formData.append("grid_name", imageName);
+            formData.append("user", id);
+            formData.append("image", blob, imageName + ".png");
+            formData.append("algorithm", algorithm);
+            formData.append("maze", maze);
+            formData.append("speed", speed);
+            console.log(`Token ${token}`);
+    
+            console.log("FormData:", formData);
+            const response = await fetch('http://127.0.0.1:8000/api/save/', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Token ${token}`
+                },
+                body: formData
+            });
+    
+            if (response.ok) {
+                console.log("Grid saved", response.statusText);
+                alert("Grid Saved");
+                setIsPopupOpen(false);
+            } else {
+                const errorData = await response.json();
+                console.log("Error on save grid endpoint:", errorData);
+                alert("Error on save grid endpoint: " + JSON.stringify(errorData));
+            }
+        } catch (error) {
+            console.log("Error capturing screenshot:", error);
+        }
+    }
+    
     return (
         <>
-            
-            <div className="grid" ref={ref}>
+            <div className={`grid ${isPopupOpen ? 'blurred' : ''}`} ref={ref}>
             {isDone && 
                 <div className="download-container">
-                    <button className="download-button" onClick={getImage}><span>Download</span></button>
+                    <button className="download-button" onClick={downloadScreenshot}><span>Download</span></button>
                 </div>
             }
             {isLoggedIn && isDone &&
                 <div className="download-container">
-                    <button className="download-button" onClick={getImage}><span>Download</span></button>
-                    <button className="download-button"><span>Save</span></button>
+                    <button className="download-button" onClick={downloadScreenshot}><span>Download</span></button>
+                    <button className="download-button" onClick={handlePopUpChange}><span>Save</span></button>
+                </div>
+            }
+            {isPopupOpen &&
+                <div className="popup-container" ref={popupRef}>
+                    <form className="save-form" onSubmit={handleSaveSubmit}>
+                        <div className="save-box">
+                            <input type="text" name="grid_name" placeholder="Grid Name" onChange={(e) => setImageName(e.target.value)} required></input>
+                        </div>
+                        <button type="submit" className="save-button" >Confirm</button>
+                    </form>
                 </div>
             }
                 {grid.map((row, rowIndex) => (

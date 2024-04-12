@@ -16,11 +16,6 @@ function Signup() {
     function handleSubmit(event) {
         event.preventDefault();
 
-        console.log(email);
-        console.log(username);
-        console.log(password);
-        console.log(confirmPassword);
-
         fetch('http://127.0.0.1:8000/api/register/', {
             method: 'POST',
             headers: {

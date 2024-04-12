@@ -30,7 +30,8 @@ def login_user(request):
                 return Response({
                     'token': token.key,
                     'email': custom_user.email,
-                    'username': custom_user.username
+                    'username': custom_user.username,
+                    'id': custom_user.id
                 })
             else:
                 return Response({'error':'Custom User not found'}, status=status.HTTP_400_BAD_REQUEST)

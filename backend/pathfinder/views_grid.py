@@ -11,6 +11,7 @@ from .models import CustomUser
 def create_grid(request):
     if request.method == 'POST':
         custom_user = get_object_or_404(CustomUser, user=request.user)
+        request.data._mutable=True
         request.data['user'] = custom_user.id
         serializer = GridSerializer(data=request.data)
         if serializer.is_valid():

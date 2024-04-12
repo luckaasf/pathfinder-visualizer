@@ -64,3 +64,5 @@ backend/pathfinder_virtual_environment/
 # Dependency directories
 pip-wheel-metadata/
 
+# Images folder
+backend/pathfinder/media/

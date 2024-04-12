@@ -38,7 +38,7 @@ function Login() {
             localStorage.setItem("username", data.username);
             localStorage.setItem("email", data.email);
             localStorage.setItem("token", data.token);
-
+            localStorage.setItem("id", data.id);
             navigate('/');
         })
         .catch(error => console.log("Error: ", error))

@@ -29,17 +29,13 @@ class UserSerializer(serializers.ModelSerializer):
         return user
     
 class GridSerializer(serializers.ModelSerializer):
-    
     class Meta:
         model = Grid
         fields = ('id', 'grid_name', 'user', 'image', 'algorithm', 'maze', 'speed')
 
     def create(self, validated_data):
         custom_user_id = validated_data.pop('user')
-
         custom_user = get_object_or_404(CustomUser, id=custom_user_id)
-
         validated_data['user'] = custom_user
-
         return Grid.objects.create(**validated_data)
     
