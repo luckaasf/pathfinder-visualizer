@@ -1,0 +1,25 @@
+.grid-card {
+    margin-right: 20px;
+}
+
+.outer-card {
+    position: absolute;
+    /*
+    top: 30%;
+    left: 30%;
+    */
+    width: 250px;
+    height: 300px;
+
+    outline: 1px solid black;
+}
+
+.inner-card {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 230px;
+    height: 280px;
+
+    outline: 1px solid black;
+}

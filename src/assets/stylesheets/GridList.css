@@ -1,0 +1,13 @@
+.grid-list-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.grid-card-wrapper {
+    margin-right: 260px;
+}

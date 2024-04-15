@@ -77,7 +77,7 @@ function Header() {
                 'Authorization': `Token ${localStorage.getItem("token")}`
             },
         })
-        .then(response => {
+        .then(() => {
             console.log("Successful Log out");
             localStorage.clear();
             window.location.reload();
@@ -85,6 +85,9 @@ function Header() {
         .catch(error => console.log("Error ", error))
     }
 
+    function handleGridListChange() {
+        navigate("/grid_list");
+    }
 
     return(
         <header className="header-container">
@@ -107,6 +110,11 @@ function Header() {
                 <option value="8">Fast</option>
             </select>
             <button className="clear-button" onClick={(handleClearChange)}><span>Reset</span></button>
+            {isLoggedIn &&
+                <button className="clear-button" onClick={handleGridListChange}>
+                    <span>Grids</span>
+                </button>
+            }
             </div>
             {!isLoggedIn && 
                 <button className="login-button" onClick={handlePopUpChange} alt="Log In" title="Log In">
