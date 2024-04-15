@@ -25,5 +25,6 @@ urlpatterns = [
     path('api/register/', views_user.register_user),
     path('api/login/', views_user.login_user),
     path('api/logout/', views_user.logout_user),
-    path('api/save/', views_grid.create_grid), 
+    path('api/grids/save/', views_grid.create_grid), # change path to api/grids/save/
+    path('api/grids/<str:username>/', views_grid.get_user_grids),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

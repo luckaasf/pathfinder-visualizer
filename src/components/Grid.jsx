@@ -163,7 +163,7 @@ function Grid() {
             console.log(`Token ${token}`);
     
             console.log("FormData:", formData);
-            const response = await fetch('http://127.0.0.1:8000/api/save/', {
+            const response = await fetch('http://127.0.0.1:8000/api/grids/save/', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Token ${token}`
