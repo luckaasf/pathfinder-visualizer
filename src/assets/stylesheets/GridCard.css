@@ -1,25 +1,61 @@
 .grid-card {
-    margin-right: 20px;
+    margin-right: 60px;
 }
 
 .outer-card {
-    position: absolute;
+    position: absolute; 
     /*
     top: 30%;
     left: 30%;
     */
-    width: 250px;
-    height: 300px;
-
-    outline: 1px solid black;
+    width: 300px;
+    height: 350px;
+    border: 1px solid #e0e0e0;
+    overflow: hidden;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    transition: 0.2s;
 }
 
-.inner-card {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    width: 230px;
-    height: 280px;
+.outer-card:hover {
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.5);
+}
 
-    outline: 1px solid black;
+.outer-card img {
+    width: 300px;
+    height: 110px;
+    display: block;
+}
+
+.card-details {
+    padding: 10px;
+}
+
+.card-details h3 {
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+.card-details p {
+    font-size: 14px;
+    color: #666;
+    margin: 5px 0;
+}
+
+.download-button {
+    position: absolute;
+    padding: 8px 16px;
+    bottom: 10px;
+    right: 10px;
+    width: 80px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.download-button:hover {
+    background-color: #0056b3;
 }
