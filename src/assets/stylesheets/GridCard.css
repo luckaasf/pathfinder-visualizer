@@ -42,7 +42,7 @@
     margin: 5px 0;
 }
 
-.download-button {
+.download-button-list {
     position: absolute;
     padding: 8px 16px;
     bottom: 10px;
@@ -54,8 +54,32 @@
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
+    justify-content: center;
+    display: flex;
+    align-items: center;
 }
 
-.download-button:hover {
+.download-button-list:hover {
     background-color: #0056b3;
+}
+
+.delete-button-list {
+    position: absolute;
+    padding: 8px 16px;
+    bottom: 10px;
+    left: 10px;
+    width: 60px;
+    border: none;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    background-color: #D32222;
+}
+
+.delete-button-list:hover {
+    background-color: #B91616;
 }

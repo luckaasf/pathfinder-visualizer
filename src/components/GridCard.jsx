@@ -13,7 +13,8 @@ function GridCard({ algorithm, grid_name, image, maze, speed, user }) {
                         <p>Algorithm: {algorithm}</p>
                         <p>Maze: {maze}</p>
                         <p>Speed: {speed}</p>
-                        <button className="download-button">Download</button>
+                        <button className="delete-button-list">Delete</button>
+                        <button className="download-button-list">Download</button>
                     </div>
                 </div>
             </div>
