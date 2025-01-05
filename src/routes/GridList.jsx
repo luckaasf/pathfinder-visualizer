@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import GridCard from "../components/GridCard";
 import "../assets/stylesheets/GridList.css";
 import MyContextProvider from "../components/MyContextProvider";
+import Pagination from '../components/Pagination';
 
 function GridList() {
         
@@ -10,6 +11,7 @@ function GridList() {
     const token = localStorage.getItem("token");
 
     const [grids, setGrids] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
 
     useEffect(() => {
         fetch(`http://127.0.0.1:8000/api/grids/${username}/`, {
@@ -36,6 +38,10 @@ function GridList() {
         console.log("GRIDS: ", grids);
     }, [grids])
     
+    const handlePagination = (pageNumber) => {
+        setCurrentPage(pageNumber);
+    };
+
     return(
         <MyContextProvider>
             <Header />
@@ -53,6 +59,11 @@ function GridList() {
                     </div>
                 ))}
             </div>
+            <Pagination
+                postsPerPage={2}
+                length={grids.length}
+                handlePagination={handlePagination}
+            />
         </MyContextProvider>
     );
 }
