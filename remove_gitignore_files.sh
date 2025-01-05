@@ -2,7 +2,7 @@
 
 # Read the .gitignore file and get the list of ignored files
 ignored_files=$(grep -v '^#' .gitignore | grep -v '^$')
-
+echo $ignored_files
 # Iterate over the ignored files and remove them from Git
 while IFS= read -r file; do
     # Check if the file exists before trying to remove it
