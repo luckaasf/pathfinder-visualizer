@@ -2,7 +2,7 @@
 
 Path Visualizer is a web application built with React that provides an interactive environment for visualizing pathfinding algorithms such as Dijkstra and A* (A-star). Users can manipulate the grid by creating and destroying walls, moving start and end nodes, creating random mazes or using algorithms such as Binary Tree, and finally adjust visualization speed to gain insights into how these algorithms work.
 
-![Visualizer](./src/assets/gifs/showcase.gif)
+![Visualizer](/frontend/src/assets/gifs/showcase.gif)
 
 ## Contents
 
