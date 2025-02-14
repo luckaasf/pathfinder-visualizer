@@ -26,15 +26,12 @@ function Login() {
         })
         .then(response => {
             if (response.ok){
-                console.log("Successful Sign up")
                 return response.json();
             } else {
-                console.log("Error on log in", response.statusText);
                 alert("Invalid credentials");
             }
         })
         .then(data => {
-            console.log(data);
             localStorage.setItem("username", data.username);
             localStorage.setItem("email", data.email);
             localStorage.setItem("token", data.token);

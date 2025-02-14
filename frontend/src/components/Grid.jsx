@@ -92,7 +92,6 @@ function Grid() {
     }, [config.maze]);
 
     useEffect(() => {
-        console.log(config);
         if (config.runAlgorithm) {
             if (config.algorithm !== "") {
                 setAnimationInProgress(true);
@@ -101,8 +100,6 @@ function Grid() {
                     setAnimationInProgress(false);
                     setIsDone(true);
                 })();        
-            } else {
-                console.log("ERROR");
             }
         }
     }, [config.runAlgorithm]);
@@ -138,7 +135,6 @@ function Grid() {
 
     function handlePopUpChange() {
         setIsPopupOpen(true);
-        console.log("OPEN");
     }
 
     async function handleSaveSubmit(event) {
@@ -160,9 +156,7 @@ function Grid() {
             formData.append("algorithm", algorithm);
             formData.append("maze", maze);
             formData.append("speed", speed);
-            console.log(`Token ${token}`);
     
-            console.log("FormData:", formData);
             const response = await fetch('http://127.0.0.1:8000/api/grids/save/', {
                 method: 'POST',
                 headers: {
@@ -172,12 +166,10 @@ function Grid() {
             });
     
             if (response.ok) {
-                console.log("Grid saved", response.statusText);
                 alert("Grid Saved");
                 setIsPopupOpen(false);
             } else {
                 const errorData = await response.json();
-                console.log("Error on save grid endpoint:", errorData);
                 alert("Error on save grid endpoint: " + JSON.stringify(errorData));
             }
         } catch (error) {
